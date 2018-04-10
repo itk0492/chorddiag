@@ -72,6 +72,8 @@
 #'   purpose of filtering the data on other visualizations
 #' @param clickGroupAction character string containing JavaScript code to be executed
 #'   on a mouse click so that shiny can get the groupIndex
+#' @param selectionNotFade integer containing a selected group of the chorddiagram
+#'   fades all groups but not the selected one
 #'
 #'
 #' @source Based on \url{http://bl.ocks.org/mbostock/4062006} with several
@@ -116,7 +118,8 @@ chorddiag <- function(data,
                       tooltipGroupConnector = " &#x25B6; ",
                       precision = NULL,
                       clickAction = NULL,
-                      clickGroupAction = NULL) {
+                      clickGroupAction = NULL,
+                      selectionNotFade = NULL) {
 
     if (!is.matrix(data))
         stop("'data' must be a matrix class object.")
@@ -192,6 +195,10 @@ chorddiag <- function(data,
         precision <- "null"
     }
 
+    if (is.null(selectionNotFade)) {
+        selectionNotFade <- -1
+    }
+
     params = list(matrix = data,
                   options = list(type = type,
                                  width = width, height = height,
@@ -220,7 +227,8 @@ chorddiag <- function(data,
                                  tooltipGroupConnector = tooltipGroupConnector,
                                  precision = precision,
                                  clickAction = clickAction,
-                                 clickGroupAction = clickGroupAction))
+                                 clickGroupAction = clickGroupAction,
+                                 selectionNotFade = selectionNotFade))
     params = Filter(Negate(is.null), params)
 
     # create widget
