@@ -154,8 +154,7 @@ HTMLWidgets.widget({
           .on("mouseover", function(d) {
               if (showTooltips) {
                 groupTip.show(d);
-                window.alert(d.index);
-                window.alert(matrix.length);
+                
               }
               return groupFade(d, fadeLevel);
           })
@@ -296,6 +295,14 @@ HTMLWidgets.widget({
                   .attr("id", function(d) { return d.label; });
     }
 
+    if(selectionNotFade > -1){
+      svg.selectAll(".chords path")
+            .filter(function(d) { return d.source.index != selectionNotFade
+                                      && d.target.index != selectionNotFade; })
+            .transition()
+            .style("opacity", fadeLevel);
+    }
+
     function categoryLabels(d, i) {
         return [{
           angle: i * Math.PI,
@@ -328,7 +335,8 @@ HTMLWidgets.widget({
     // specific group
     function groupFade(g, opacity) {
         svg.selectAll(".chords path")
-            .filter(function(d) { return d.source.index != g.index
+            .filter(function(d) { window.alert(g.index)
+                                      return d.source.index != g.index
                                       && d.target.index != g.index; })
             .transition()
             .style("opacity", opacity);
