@@ -335,8 +335,7 @@ HTMLWidgets.widget({
     // specific group
     function groupFade(g, opacity) {
         svg.selectAll(".chords path")
-            .filter(function(d) { window.alert(g.index)
-                                      return d.source.index != g.index
+            .filter(function(d) { return d.source.index != g.index
                                       && d.target.index != g.index; })
             .transition()
             .style("opacity", opacity);
