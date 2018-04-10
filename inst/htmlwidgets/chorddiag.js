@@ -62,7 +62,8 @@ HTMLWidgets.widget({
         tooltipGroupConnector = options.tooltipGroupConnector,
         precision = options.precision,
         clickAction = options.clickAction,
-        clickGroupAction = options.clickGroupAction;
+        clickGroupAction = options.clickGroupAction,
+        selectionNotFade = options.selectionNotFade;
 
     d3.select(el).selectAll("div.d3-tip").remove();
 
