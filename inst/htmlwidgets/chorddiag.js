@@ -151,7 +151,11 @@ HTMLWidgets.widget({
           .style("stroke", function(d) { return fillScale(d.index); })
           .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
           .on("mouseover", function(d) {
-              if (showTooltips) groupTip.show(d);
+              if (showTooltips) {
+                groupTip.show(d);
+                window.alert(d.index);
+                window.alert(matrix.length);
+              }
               return groupFade(d, fadeLevel);
           })
           .on("mouseout", function(d) {
