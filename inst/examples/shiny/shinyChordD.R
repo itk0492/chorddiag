@@ -13,7 +13,7 @@ groupColors <- c("#000000", "#FFDD89", "#957244", "#F26223")
 row.names(m) <- groupNames
 colnames(m) <- groupNames
 
-shinyServer(function(input, output) {
+server <- function(input, output) {
     output$chorddiag <- renderChorddiag(
         chorddiag(m,
                   groupColors = groupColors,
@@ -33,9 +33,9 @@ shinyServer(function(input, output) {
         paste0("Clicked group: ", groupNames[input$groupIndex])
     })
 
-})
+}
 
-shinyUI(fluidPage(
+ui <- fluidPage(
     titlePanel("Hair Color Preferences"),
 
     sidebarLayout(
@@ -53,3 +53,5 @@ shinyUI(fluidPage(
         )
     )
 ))
+
+shinyApp(ui, server)
