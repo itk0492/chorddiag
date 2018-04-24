@@ -152,14 +152,13 @@ HTMLWidgets.widget({
           .style("stroke", function(d) { return fillScale(d.index); })
           .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
           .on("mouseover", function(d) {
-              if (showTooltips) {
-                groupTip.show(d);
-                
-              }
+              if (showTooltips) groupTip.show(d);
+              if(selectionNotFade == -1)
               return groupFade(d, fadeLevel);
           })
           .on("mouseout", function(d) {
               if (showTooltips) groupTip.hide(d);
+              if(selectionNotFade == -1)
               return groupFade(d, 1);
           })
           .on("click", clickGroup);
@@ -207,27 +206,53 @@ HTMLWidgets.widget({
     }
 
     // create chords
+    
     var chords = svg.append("g").attr("class", "chords")
                     .selectAll("path")
                     .data(chord.chords)
                     .enter().append("path").attr("id", function(d, i) {
-                        return "chord-" + groupNames[d.source.index]
+                      return "chord-" + groupNames[d.source.index]
                                + "-" + groupNames[d.target.index];
                     })
                     .attr("d", d3.svg.chord().radius(innerRadius));
+                    
 
     // style chords and define mouse events
     chords.style("fill", function(d) { return fillScale(d.target.index); })
           .style("stroke", chordedgeColor)
-          .style("fill-opacity", 0.67)
+          .style("fill-opacity", function(d) {
+            if(selectionNotFade > -1){
+              if(selectionNotFade == d.target.index || selectionNotFade == d.source.index){
+                return 0.67;
+              } else {
+                return 0;
+              }
+            }
+            else{
+              return 0.67;
+            }
+          })
           .style("stroke-width", "0.5px")
-          .style("opacity", 1)
+          .style("opacity", function(d) {
+            if(selectionNotFade > -1){
+              if(selectionNotFade == d.target.index || selectionNotFade == d.source.index){
+                return 1;
+              } else {
+                return 0
+              }
+            }
+            else{
+              return 1;
+            }
+          })
           .on("mouseover", function(d) {
               if (showTooltips) chordTip.show(d);
+              if(selectionNotFade == -1)
               return chordFade(d, fadeLevel);
           })
           .on("mouseout", function(d) {
               if (showTooltips) chordTip.hide(d);
+              if(selectionNotFade == -1)
               return chordFade(d, 1);
           })
           .on("click", click);
@@ -239,9 +264,11 @@ HTMLWidgets.widget({
                        .data(chord.groups)
                        .enter().append("g").attr("class", "name")
                        .on("mouseover", function(d) {
+                          if(selectionNotFade == -1)
                            return groupFade(d, fadeLevel);
                        })
                        .on("mouseout", function(d) {
+                          if(selectionNotFade == -1)
                            return groupFade(d, 1);
                        })
                        .selectAll("g")
